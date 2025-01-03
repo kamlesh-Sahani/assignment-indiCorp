@@ -1,0 +1,35 @@
+.tool{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+
+}
+
+.tool form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tool form .inputBox{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.tool form .inputBox input,button{
+    width: 400px;
+    height: 35px;
+    border-radius: 4px;
+    padding-left: 10px;
+
+}
+
+.tool form  .submitBtn{
+    font-weight: 800;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}

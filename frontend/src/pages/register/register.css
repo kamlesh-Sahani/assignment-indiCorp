@@ -1,0 +1,54 @@
+.register{
+    width:100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register form{
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.register form h1{
+    margin-bottom: 10px;
+}
+.register form .inputBox{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+
+
+.register form .inputBox p{
+    text-align: start;
+    font-size: 13px;
+}
+.register form .inputBox input,select{
+    width: 400px;
+    height: 35px;
+    border-radius: 5px;
+    padding-left: 10px;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+}
+.register form button{
+    width: 400px;
+    height: 35px;
+    border-radius: 5px;
+    padding-left: 10px;
+    color: #000;
+    cursor: pointer;
+    font-weight: 800;
+    outline: none;
+    border: none;
+}
+.register form  a{
+    text-align: end;
+}
