@@ -1,16 +1,24 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import "./register.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../utils/api";
 export interface RegisterData {
   name: string;
   email: string;
   password: string;
-  profile: string;
   mobile: string;
+  experience:string;
 }
 const Register = () => {
-  const [registerData, setRegisterData] = useState<RegisterData | {}>({});
+  const [registerData, setRegisterData] = useState<RegisterData>({
+    name: "",
+    email: "",
+    password: "",
+    mobile: "",
+    experience:""
+  });
+  const [profile, setProfile] = useState<File | null>(null);
+  const navigate = useNavigate();
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -21,24 +29,30 @@ const Register = () => {
     }));
   };
 
-  const submitHandler = async(e: FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const {data} = await api.post("/register",registerData);
-      console.log(data);
-      if(data.success){
-        alert(data.message)
-      }
-    } catch (error:any) {
-      alert(error?.response?.data?.message || "some went wrong")
-    }
- 
-    
 
+    try {
+      const { data } = await api.post("/register", {
+        profile,
+        ...registerData,
+      });
+      if (data.success) {
+        alert(data.message);
+        navigate("/");
+      }
+    } catch (error: any) {
+      alert(error?.response?.data?.message || "some went wrong");
+    }
+  };
+
+  const profileHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target?.files![0];
+    setProfile(file);
   };
   return (
     <div className="register">
-      <form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler}  encType="multipart/form-data">
         <h1>
           <span className="mainText">Mechanic</span> Register Form
         </h1>
@@ -50,6 +64,7 @@ const Register = () => {
             name="name"
             placeholder="eg. Kamlesh sahani"
             onChange={handleChange}
+            value={registerData.name}
             required
           />
         </div>
@@ -60,6 +75,7 @@ const Register = () => {
             name="email"
             placeholder="eg. kamleshbca2005@gmail.com"
             onChange={handleChange}
+            value={registerData.email}
             required
           />
         </div>
@@ -71,6 +87,7 @@ const Register = () => {
             name="mobile"
             placeholder="eg. 9667760692"
             onChange={handleChange}
+            value={registerData.mobile}
             required
           />
         </div>
@@ -81,12 +98,17 @@ const Register = () => {
             name="password"
             placeholder="eg. ****@****"
             onChange={handleChange}
+            value={registerData.password}
             required
           />
         </div>
 
         <div className="inputBox">
-          <select name="experience" onChange={handleChange}>
+          <select
+            name="experience"
+            onChange={handleChange}
+            value={registerData.experience}
+          >
             <option value="expert">Expert</option>
             <option value={"medium"}>Medium</option>
             <option value={"new-recuit"}>New Recruit</option>
@@ -96,7 +118,7 @@ const Register = () => {
 
         <div className="inputBox">
           <p>Your Profile Pic</p>
-          <input type="file" name="profile" onChange={handleChange} />
+          <input type="file" name="profile" onChange={profileHandler} />
         </div>
 
         <Link to={"/login"} className="mainText">

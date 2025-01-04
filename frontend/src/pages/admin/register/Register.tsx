@@ -24,7 +24,7 @@ const AdminRegister = () => {
     e.preventDefault();
     try {
       const { data } = await adminApi.post("/register", registerData);
-      console.log(data);
+
       if (data.success) {
         alert(data.message);
         navigate("/tool")

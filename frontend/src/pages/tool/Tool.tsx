@@ -9,7 +9,6 @@ interface toolDataType{
     quantity:number;
 }
 
-
 const Tool = () => {
     const [toolData,setToolData] =  useState<toolDataType>({
         name:"",
@@ -35,9 +34,9 @@ const Tool = () => {
     e.preventDefault();
     try {
 
-      console.log({image,...toolData},image)
+      
       const {data} = await toolApi.post("/new",{image,...toolData});
-      console.log(data);
+     
       if(data.success){
         alert(data.message)
       }

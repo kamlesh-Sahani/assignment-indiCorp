@@ -119,3 +119,24 @@ export const adminProfile = async(req,res)=>{
     });
   }
 }
+
+
+export const adminLogout = (req,res)=>{
+  try {
+    res.cookie("auth-token","",{
+      maxAge:0,
+       httpOnly: true, 
+      secure: process.env.NODE_ENV === "production",
+    })
+
+    return res.status(200).json({
+      success:true,
+      message:"logout successfuly"
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}

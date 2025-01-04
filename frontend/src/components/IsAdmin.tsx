@@ -1,44 +1,39 @@
 import { ReactNode, useEffect, useState } from "react"
 import { adminApi } from "../utils/api";
 import {Navigate} from "react-router-dom"
-const Protected = ({children}:{children:ReactNode}) => {
+const IsAdmin = ({children}:{children:ReactNode}) => {
+    const [loading,setLoading] = useState<boolean>(true)
     const [admin,setAdmin] = useState<{
         name:string;
         _id:string;
         email:string;
         profile:string;
-    }>();
-    const [loading,setLoading] = useState<boolean>(false)
+    }|null>();
     useEffect(()=>{
         async function fetchMe(){
             try {
                 setLoading(true)
                 const {data} =await adminApi.get("/me");
-                console.log(data.admin);
                 setAdmin(data.admin)
-                setLoading(false)
+                
             } catch (error) {
+               setAdmin(null)
+            }finally{
                 setLoading(false)
             }
           
         }
         fetchMe()
     },[])
-    console.log(admin && admin._id && !admin.name,"admin")
-    if(loading){
-        return <h1>Loading......</h1>
-    }
-    if(admin && admin._id && admin.name){
-        return (
-            <>
-              {children}
-            </>
-          )
-    }else{
-       return <Navigate  to={"/login"}/>
-    }
- 
-     
+    if (loading) {
+        return <h1>Loading...</h1>;
+      }
+    
+      if (admin && admin.email) {
+        return <>{children}</>; 
+      }
+    
+      return <Navigate to="/admin/login" />; 
 }
 
-export default Protected
+export default IsAdmin

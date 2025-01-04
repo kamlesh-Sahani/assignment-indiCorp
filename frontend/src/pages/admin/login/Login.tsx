@@ -9,6 +9,7 @@ export interface loginData {
 }
 const AdminLogin = () => {
     const [loginData,setLoginData] = useState<loginData|{}>({});
+    const [loading,setLoading]=useState(false);
     const navigate = useNavigate();
     const handleChange = (e:ChangeEvent<HTMLInputElement>)=>{
         const {value,name} =e.target;
@@ -20,15 +21,18 @@ const AdminLogin = () => {
 
     const submitHandler = async(e:FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
+        setLoading(true)
         try {
           const {data} = await adminApi.post("/login",loginData);
-          console.log(data);
+    
           if(data.success){
             alert(data.message)
             navigate("/tool")
           }
         } catch (error:any) {
           alert(error?.response?.data?.message || "some went wrong")
+        }finally{
+          setLoading(false)
         }
     }
   return (
@@ -51,7 +55,7 @@ const AdminLogin = () => {
         <Link to={"/admin/register"} className="mainText">
           Create new Account
         </Link>
-        <button type="submit" className="mainBg">login</button>
+        <button type="submit" className="mainBg">{loading?"loading":"Login"}</button>
       </form>
     </div>
   );
